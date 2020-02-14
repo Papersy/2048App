@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">2048App</string>
+    <string name="positionDesc">Choose two numbers swap them</string>
+    <string name="deleteDesc">Choose number to delete</string>
+    <string name="doubleDesc">Choose number to double</string>
+    <string name="onBackPressed">Press one more time to exit</string>
+    <string name="best_score">Best score:</string>
+    <string name="score">Score:</string>
+    <string name="game_over">Game over, restart game</string>
+    <string name="string_int_format">%s %d</string>
+
 </resources>

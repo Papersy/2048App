@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorPrimary">#3D444D</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="mainLinearBack">#535c68</color>
+    <color name="mainLinearFront">#95afc0</color>
+    <color name="gameBack">#CBDDE2</color>
+    <color name="bonusActive">#107E2D</color>
 </resources>
