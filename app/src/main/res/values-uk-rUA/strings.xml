@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Not 2048</string>
+
+    <string name="start">Старт</string>
+    <string name="statistic">Статистика</string>
+    <string name="shop">Крамниця</string>
+
+    <string name="best_score">Найкращий результат:</string>
+    <string name="best_score2">Найкращий результат</string>
+    <string name="deleteBonus">Бонус видалення +3</string>
+    <string name="score">Очки:</string>
+    <string name="deleteDesc">Оберіть одне число для видалення</string>
+    <string name="doubleBonus">Бонус подвоєння +1</string>
+    <string name="doubleDesc">Оберіть число для подвоєння</string>
+    <string name="game_over">Гра окінчена, почніть заново</string>
+    <string name="onBackPressed">Натисніть ще раз, щоб вийти</string>
+    <string name="positionBonus">Смена позиції +2</string>
+    <string name="positionDesc">Оберіть два числа для зміни позиції</string>
+
+
+    <string name="string_int_format" translatable="false">%s %d</string>
+    <string name="string_string_int_format" translatable="false">%s %s %d</string>
+
+    <string name="rules">Правила\n\nПолучите как можно больше очков.\n1. Вы можете удалить число, просто выберите бонус и ячейку.\n2. Вы можете удвоить число, просто выберите
+        бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.</string>
+
+</resources>

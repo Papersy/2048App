@@ -1,12 +1,27 @@
 <resources>
-    <string name="app_name">2048App</string>
-    <string name="positionDesc">Choose two numbers swap them</string>
+    <string name="app_name" translatable="false">Not 2048</string>
+
+    <string name="start">Start</string>
+    <string name="statistic">Statistic</string>
+    <string name="shop">Shop</string>
+
+    <string name="positionDesc">Choose two numbers to swap them</string>
     <string name="deleteDesc">Choose number to delete</string>
     <string name="doubleDesc">Choose number to double</string>
     <string name="onBackPressed">Press one more time to exit</string>
     <string name="best_score">Best score:</string>
+    <string name="best_score2">Best score</string>
     <string name="score">Score:</string>
     <string name="game_over">Game over, restart game</string>
-    <string name="string_int_format">%s %d</string>
+    <string name="string_int_format" translatable="false">%s %d</string>
+    <string name="string_string_int_format" translatable="false">%s %s %d</string>
 
+    <string name="doubleBonus">Double bonus +1</string>
+    <string name="positionBonus">Change position +2</string>
+    <string name="deleteBonus">Delete bonus +3</string>
+
+    <string name="rules">Rules\n\nGet as many points as possible.\n1. You can delete a number, just choose bonus and point.\n2. You can x2 number,
+        just choose bonus and point.\n3. You can change position of two numbers, just choose bonus and two points.</string>
 </resources>
+
+

@@ -2,9 +2,11 @@ package com.example.a2048app.mainGameWindow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.a2048app.MainActivity;
 import com.example.a2048app.R;
 
 public class gameWindow extends AppCompatActivity {
@@ -38,7 +40,9 @@ public class gameWindow extends AppCompatActivity {
         if(backPressedTime + 2000 > System.currentTimeMillis()){
             backToast.cancel();
 
-            super.onBackPressed();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
 
             return;
         }

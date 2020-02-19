@@ -1,24 +1,40 @@
 package com.example.a2048app;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.a2048app.mainGameWindow.gameWindow;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
+    private long backPressedTime;
+    private Toast backToast;
     private int temp = 4;
     private TextView gameSize;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //changeLanguage();
         setContentView(R.layout.activity_main);
         gameSize = findViewById(R.id.gameSize);
+
+        ((ImageView) findViewById(R.id.imgLeft)).setColorFilter(Color.parseColor("#574A40"));
+        ((ImageView) findViewById(R.id.imgRight)).setColorFilter(Color.parseColor("#574A40"));
 
         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor myEditor = myPreferences.edit();
@@ -28,6 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnStart).setOnClickListener(v-> {
             Intent intent = new Intent(this, gameWindow.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnStatistic).setOnClickListener(v->{
+            Intent intent = new Intent(this, StatisticAll.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnShop).setOnClickListener(v->{
+            Intent intent = new Intent(this, ShopActivity.class);
             startActivity(intent);
         });
 
@@ -54,33 +80,6 @@ public class MainActivity extends AppCompatActivity {
             myEditor.putInt("gameSize", temp);
             myEditor.apply();
         });
-
-
-//        if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE) {
-//            ((TextView)findViewById(R.id.textView)).setText("Large");
-//        }
-//        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_SMALL) {
-//            ((TextView)findViewById(R.id.textView)).setText("Small");
-//        }
-//        else if ((getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_NORMAL) {
-//            ((TextView)findViewById(R.id.textView)).setText("Normal");
-//        }
-
-
-//        RequestQueue queue = Volley.newRequestQueue(this);
-//        String url ="https://showcase.linx.twenty57.net:8081/UnixTime/tounix?date=now";
-//
-//
-//        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-//                response -> {
-//                    long n = -1;
-//                    try {
-//                        n = Integer.parseInt(response);
-//                    } catch (Exception ignore) { }
-//                    System.out.println(n);
-//                }, error -> System.out.println("That didn't work!" + error.toString()));
-//
-//        queue.add(stringRequest);
     }
 
     @SuppressLint("SetTextI18n")
@@ -104,7 +103,31 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
- }
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
+    void changeLanguage(){
+        Locale locale = new Locale("uk");
 
+        Locale.setDefault(locale);
+        Configuration configuration = new Configuration();
+        configuration.setLocale(locale);
+        getBaseContext().getResources()
+                .updateConfiguration(configuration,
+                        getBaseContext()
+                                .getResources()
+                                .getDisplayMetrics());
+    }
 
-
+    @Override
+    public void onBackPressed(){
+        if(backPressedTime + 2000 > System.currentTimeMillis()){
+            backToast.cancel();
+            finishAffinity();
+            return;
+        }
+        else{
+            backToast = Toast.makeText(getBaseContext(), getString(R.string.onBackPressed), Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
+    }
+}

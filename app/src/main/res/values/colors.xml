@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3D444D</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#eee4da</color>
+    <color name="colorBtnMenu">#FF9671</color>
     <color name="mainLinearBack">#535c68</color>
-    <color name="mainLinearFront">#95afc0</color>
-    <color name="gameBack">#CBDDE2</color>
-    <color name="bonusActive">#107E2D</color>
+    <color name="mainLinearFront">#d6cdc4</color>
+    <color name="lineaInfo">#bdada0</color>
+    <color name="lineaShop">#E4D5C8</color>
+    <color name="gameBack">#fbf8f1</color>
+    <color name="bonusActive">#993FA059</color>
+    <color name="txtColor">#574A40</color>
+    <color name="ads">#8B6C5D</color>
+    <color name="asdasd">#F310D0</color>
 </resources>

@@ -11,13 +11,13 @@ public class Statistic {
     private int doubleCount;
     private int positionCount;
 
-    Statistic(Context activity){
+    public Statistic(Context activity){
         myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         myEditor = myPreferences.edit();
 
-        deleteCount = myPreferences.getInt("deleteCount", 0);
-        doubleCount = myPreferences.getInt("doubleCount", 0);
-        positionCount = myPreferences.getInt("positionCount", 0);
+        deleteCount = myPreferences.getInt("deleteCount", 3);
+        doubleCount = myPreferences.getInt("doubleCount", 1);
+        positionCount = myPreferences.getInt("positionCount", 2);
     }
 
     public int getBestScore() {
@@ -28,7 +28,7 @@ public class Statistic {
         this.bestScore = bestScore;
     }
 
-    int getBestScr(int index){
+    public int getBestScr(int index){
         switch (index){
             case 4:
                 getBestFour();
@@ -115,32 +115,54 @@ public class Statistic {
         myEditor.apply();
     }
 
-    public int getDeleteCount() {
+    int getDeleteCount() {
         return deleteCount;
     }
 
-    public void setDeleteCount(int deleteCount) {
+    void setDeleteCount(int deleteCount) {
         this.deleteCount = deleteCount;
         myEditor.putInt("deleteCount", deleteCount);
         myEditor.apply();
     }
 
-    public int getDoubleCount() {
+    public void addDeleteCount(int deleteCount){
+        this.deleteCount += deleteCount;
+        myEditor.putInt("deleteCount", deleteCount);
+        myEditor.apply();
+    }
+
+
+
+    int getDoubleCount() {
         return doubleCount;
     }
 
-    public void setDoubleCount(int doubleCount) {
+    void setDoubleCount(int doubleCount) {
         this.doubleCount = doubleCount;
         myEditor.putInt("doubleCount", doubleCount);
         myEditor.apply();
     }
 
-    public int getPositionCount() {
+    public void addDoubleCount(int doubleCount){
+        this.doubleCount += doubleCount;
+        myEditor.putInt("doubleCount", doubleCount);
+        myEditor.apply();
+    }
+
+
+
+    int getPositionCount() {
         return positionCount;
     }
 
-    public void setPositionCount(int positionCount) {
+    void setPositionCount(int positionCount) {
         this.positionCount = positionCount;
+        myEditor.putInt("positionCount", positionCount);
+        myEditor.apply();
+    }
+
+    public void addPositionCount(int positionCount) {
+        this.positionCount += positionCount;
         myEditor.putInt("positionCount", positionCount);
         myEditor.apply();
     }

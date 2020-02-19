@@ -18,7 +18,7 @@
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
+        app:layout_constraintTop_toTopOf="parent">
 
     </LinearLayout>
 
@@ -98,7 +98,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="N"
-            android:textColor="@android:color/black"
+            android:textColor="@color/txtColor"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -132,13 +132,13 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/textDelteCount"
+            android:id="@+id/textDeleteCount"
             android:layout_width="44dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="N"
-            android:textColor="@android:color/black"
+            android:textColor="@color/txtColor"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -179,7 +179,7 @@
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
             android:text="N"
-            android:textColor="@android:color/black"
+            android:textColor="@color/txtColor"
             android:textSize="16sp" />
 
     </LinearLayout>
@@ -188,8 +188,7 @@
         android:id="@+id/linearInfo"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:background="@color/colorAccent"
+        android:layout_marginBottom="5dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/mainLinear"
         app:layout_constraintEnd_toEndOf="parent"
@@ -204,7 +203,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
-                android:text="Score:"
+                android:text="@string/score"
                 android:textSize="30sp"
                 app:layout_constraintBottom_toTopOf="@+id/txtBestScore"
                 app:layout_constraintStart_toStartOf="parent"
@@ -214,41 +213,93 @@
                 android:id="@+id/goHome"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="#A21818"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_linear_info_btn"
                 android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"></LinearLayout>
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgGoHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_homepage" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/restartGame"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginLeft="20dp"
-                android:background="#FFFFFF"
+                android:layout_marginStart="35dp"
+                android:layout_marginLeft="35dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_linear_info_btn"
                 android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/prevArray"></LinearLayout>
+                app:layout_constraintStart_toEndOf="@+id/prevArray">
+
+                <ImageView
+                    android:id="@+id/imgRestart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_reload" />
+            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/prevArray"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="#FDF70808"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/custom_linear_info_btn"
                 android:orientation="horizontal"
+                android:padding="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"></LinearLayout>
+                app:layout_constraintStart_toStartOf="parent">
+
+                <ImageView
+                    android:id="@+id/imgPrevArray"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    app:srcCompat="@drawable/ic_left" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtBestScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="20dp"
-                android:text="Best score:"
+                android:fontFamily="sans-serif-medium"
+                android:text="@string/best_score"
                 app:layout_constraintBottom_toTopOf="@+id/prevArray"
                 app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearRules"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/custom_linear_info_btn"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imgRules"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="8dp"
+            app:srcCompat="@drawable/ic_question_mark" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

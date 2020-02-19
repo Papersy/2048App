@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -14,12 +15,15 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.example.a2048app.Enum.Bonus;
 import com.example.a2048app.MainActivity;
 import com.example.a2048app.R;
 import com.example.a2048app.onSwipe.onSwipe;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 class gameWindowInitialization {
     private Statistic statistic;
@@ -53,11 +57,16 @@ class gameWindowInitialization {
         linearDouble = activity.findViewById(R.id.linearDouble);
         linearPosition = activity.findViewById(R.id.linearPosition);
 
-        ((ImageView) activity.findViewById(R.id.imgDelete)).setColorFilter(Color.parseColor("#535c68"));
+        ((ImageView) activity.findViewById(R.id.imgDelete)).setColorFilter(Color.parseColor("#bdada0"));
         ((ImageView) activity.findViewById(R.id.imgPosition)).setColorFilter(Color.parseColor("#ffffff"));
-        ((TextView) activity.findViewById(R.id.textDelteCount)).setText(String.valueOf(gameController.bonusCount(Bonus.DELETE)));
+        ((TextView) activity.findViewById(R.id.textDeleteCount)).setText(String.valueOf(gameController.bonusCount(Bonus.DELETE)));
         ((TextView) activity.findViewById(R.id.textPositionCount)).setText(String.valueOf(gameController.bonusCount(Bonus.POSITION)));
         ((TextView) activity.findViewById(R.id.textDoubleCount)).setText(String.valueOf(gameController.bonusCount(Bonus.DOUBLE)));
+
+        ((ImageView) activity.findViewById(R.id.imgGoHome)).setColorFilter(Color.parseColor("#ffffff"));
+        ((ImageView) activity.findViewById(R.id.imgPrevArray)).setColorFilter(Color.parseColor("#ffffff"));
+        ((ImageView) activity.findViewById(R.id.imgRestart)).setColorFilter(Color.parseColor("#ffffff"));
+        ((ImageView) activity.findViewById(R.id.imgRules)).setColorFilter(Color.parseColor("#ffffff"));
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -70,7 +79,7 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.getBonusCount(Bonus.DELETE)) {
+                if (gameController.bonusCount(Bonus.DELETE) > 0) {
                     txtDesc.setText(activity.getString(R.string.deleteDesc));
                     txtDesc.setVisibility(View.VISIBLE);
                     gameController.setBonus(Bonus.DELETE);
@@ -91,7 +100,7 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.getBonusCount(Bonus.DOUBLE)) {
+                if (gameController.bonusCount(Bonus.DOUBLE) > 0) {
                     txtDesc.setText(activity.getString(R.string.doubleDesc));
                     txtDesc.setVisibility(View.VISIBLE);
                     gameController.setBonus(Bonus.DOUBLE);
@@ -112,7 +121,7 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.getBonusCount(Bonus.POSITION)) {
+                if (gameController.bonusCount(Bonus.POSITION) > 0) {
                     txtDesc.setText(activity.getString(R.string.positionDesc));
                     txtDesc.setVisibility(View.VISIBLE);
                     gameController.setBonus(Bonus.POSITION);
@@ -127,16 +136,16 @@ class gameWindowInitialization {
 
         swipeReader.setOnTouchListener(new onSwipe(activity){
             public void onSwipeTop() {
-                gameController.swipeTop();
-            }
-            public void onSwipeRight() {
-                gameController.swipeRight();
-            }
-            public void onSwipeLeft() {
-                gameController.swipeLeft();
+                gameController.countTimer(1);
             }
             public void onSwipeBottom() {
-                gameController.swipeBot();
+                gameController.countTimer(2);
+            }
+            public void onSwipeLeft() {
+                gameController.countTimer(3);
+            }
+            public void onSwipeRight() {
+                gameController.countTimer(4);
             }
         });
 
@@ -144,11 +153,16 @@ class gameWindowInitialization {
             gameController.saveArray();
             Intent intent = new Intent(activity, MainActivity.class);
             activity.startActivity(intent);
+            activity.finish();
         });
 
         activity.findViewById(R.id.restartGame).setOnClickListener(v-> restartGame());
 
         activity.findViewById(R.id.prevArray).setOnClickListener(v-> gameController.setPrevArray());
+
+        activity.findViewById(R.id.linearRules).setOnClickListener(v->{
+            showAlertDialog();
+        });
     }
 
 
@@ -216,15 +230,15 @@ class gameWindowInitialization {
                     setOnClickListener(v-> gameController.checkBonus(data.y, data.x));
         }
 
-        activity.findViewById(R.id.linearInfo).setMinimumWidth(boxCount*(800/ boxCount + 10));
-        System.out.println(String.valueOf(boxCount*(800/ boxCount + 10)));
+        activity.findViewById(R.id.linearInfo).getLayoutParams().width = 820 + boxCount * 10;
+        activity.findViewById(R.id.linearInfo).requestLayout();
     }
 
     private void restartGame(){
         gameController.restartGame();
     }
 
-    public void saveArray(){
+    void saveArray(){
         gameController.saveArray();
     }
 
@@ -236,6 +250,20 @@ class gameWindowInitialization {
             this.x = x;
             this.y = y;
         }
+    }
+
+    void showAlertDialog(){
+        AlertDialog alertDialog = new AlertDialog.Builder(activity, R.style.MyDialogTheme).create();
+        alertDialog.setMessage(activity.getString(R.string.rules));
+
+
+        alertDialog.show();
+
+        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+
+        Objects.requireNonNull(messageView).setTextColor(Color.parseColor("#FFFFFF"));
+        messageView.setTextSize(25);
+        messageView.setGravity(Gravity.CENTER);
     }
 }
 

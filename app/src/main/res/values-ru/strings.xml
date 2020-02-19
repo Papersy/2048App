@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Not 2048</string>
+
+    <string name="start">Старт</string>
+    <string name="statistic">Статистика</string>
+    <string name="shop">Магазин</string>
+
+    <string name="positionDesc">Выберите два числа для изминения позиции</string>
+    <string name="deleteDesc">Выберите число для удаления</string>
+    <string name="doubleDesc">Выберите число чтобы удвоить его</string>
+    <string name="onBackPressed">Нажмите еще раз, чтобы выйти</string>
+    <string name="best_score">Лучший результат:</string>
+    <string name="best_score2">Лучший результат</string>
+    <string name="score">Очки:</string>
+    <string name="game_over">Игра окончена, начните заново</string>
+    <string name="string_int_format">%s %d</string>
+    <string name="string_string_int_format">%s %s %d</string>
+
+    <string name="doubleBonus">Бонус умножения +1</string>
+    <string name="positionBonus">Смена позиции +2</string>
+    <string name="deleteBonus">Бонус удаления +3</string>
+
+    <string name="rules">
+            Правила\n\nПолучите как можно больше очков.\n1. Вы можете удалить число, просто выберите бонус и ячейку.\n2. Вы можете удвоить число, просто выберите
+            бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.</string>
+</resources>
+
+
