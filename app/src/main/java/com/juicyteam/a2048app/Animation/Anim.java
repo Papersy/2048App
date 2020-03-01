@@ -1,4 +1,4 @@
-package com.example.a2048app.Animation;
+package com.juicyteam.a2048app.Animation;
 
 import android.view.View;
 import android.view.animation.TranslateAnimation;

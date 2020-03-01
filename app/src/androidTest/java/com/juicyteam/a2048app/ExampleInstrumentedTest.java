@@ -1,4 +1,4 @@
-package com.example.a2048app;
+package com.juicyteam.a2048app;
 
 import android.content.Context;
 

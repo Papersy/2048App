@@ -1,6 +1,6 @@
-package com.example.a2048app;
+package com.juicyteam.a2048app;
 
-import com.example.a2048app.mainGameWindow.Statistic;
+import com.juicyteam.a2048app.mainGameWindow.Statistic;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
@@ -8,12 +8,12 @@ import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 public class Ads implements RewardedVideoAdListener {
+    Statistic statistic;
     private int index;
-    private ShopActivity activity;
     private RewardedVideoAd mRewardedVideoAd;
 
     Ads(ShopActivity activity){
-        this.activity = activity;
+        statistic = new Statistic(activity);
 
         MobileAds.initialize(activity, "ca-app-pub-3010679320408675~3651137414");
         // Use an activity context to get the rewarded video instance.
@@ -65,23 +65,20 @@ public class Ads implements RewardedVideoAdListener {
 
     @Override
     public void onRewarded(RewardItem rewardItem) {
-        Statistic statistic = new Statistic(activity);
+
         switch (index){ // 1 - double, 2 - position, 3 - delete
             case 1:
-                statistic.addDoubleCount(1);
+                statistic.addBonusCount(1);
                 break;
             case 2:
-                statistic.addPositionCount(2);
+                statistic.addBonusCount(2);
                 break;
             case 3:
-                statistic.addDeleteCount(3);
+                statistic.addBonusCount(3);
                 break;
         }
-
-
         loadRewardedVideoAd();
     }
-
 
     @Override
     public void onRewardedVideoAdLeftApplication() {

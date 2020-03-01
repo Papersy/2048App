@@ -4,6 +4,7 @@
     <string name="start">Start</string>
     <string name="statistic">Statistic</string>
     <string name="shop">Shop</string>
+    <string name="about">About</string>
 
     <string name="positionDesc">Choose two numbers to swap them</string>
     <string name="deleteDesc">Choose number to delete</string>
@@ -20,8 +21,15 @@
     <string name="positionBonus">Change position +2</string>
     <string name="deleteBonus">Delete bonus +3</string>
 
+    <string name="notEnoughBonus">Not enough bonuses</string>
+    <string name="bonusesLimit">You have reached the limit for using bonuses</string>
+
     <string name="rules">Rules\n\nGet as many points as possible.\n1. You can delete a number, just choose bonus and point.\n2. You can x2 number,
-        just choose bonus and point.\n3. You can change position of two numbers, just choose bonus and two points.</string>
+        just choose bonus and point.\n3. You can change position of two numbers, just choose bonus and two points.\n4. You have 5 bonuses per round.</string>
+
+
+    <string name="aboutDesc">The game is developed by Juicy Team. We hope you enjoy our game, and you will get only positive emotions!\nIcons by Flaticon.</string>
+
 </resources>
 
 

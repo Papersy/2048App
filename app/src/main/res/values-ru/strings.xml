@@ -4,6 +4,7 @@
     <string name="start">Старт</string>
     <string name="statistic">Статистика</string>
     <string name="shop">Магазин</string>
+    <string name="about">Про нас</string>
 
     <string name="positionDesc">Выберите два числа для изминения позиции</string>
     <string name="deleteDesc">Выберите число для удаления</string>
@@ -20,9 +21,16 @@
     <string name="positionBonus">Смена позиции +2</string>
     <string name="deleteBonus">Бонус удаления +3</string>
 
+    <string name="notEnoughBonus">Нет бонуса в наличии</string>
+    <string name="bonusesLimit">Вы достигли лимита использования бонусов</string>
+
     <string name="rules">
             Правила\n\nПолучите как можно больше очков.\n1. Вы можете удалить число, просто выберите бонус и ячейку.\n2. Вы можете удвоить число, просто выберите
-            бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.</string>
+            бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.\n4. У вас есть 5 бонусов на каждый раунд.</string>
+
+    <string name="aboutDesc">Игра разработана Juicy Team. Надеемся Вам понравится наша игра, и вы получите он нее море хороших эмоций!\nИконки от Flaticon.</string>
+
+
 </resources>
 
 

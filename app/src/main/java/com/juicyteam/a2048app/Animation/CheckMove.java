@@ -1,4 +1,4 @@
-package com.example.a2048app.Animation;
+package com.juicyteam.a2048app.Animation;
 
 public class CheckMove {
     private int boxSize;

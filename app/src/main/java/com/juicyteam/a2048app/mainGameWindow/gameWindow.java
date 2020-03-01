@@ -1,4 +1,4 @@
-package com.example.a2048app.mainGameWindow;
+package com.juicyteam.a2048app.mainGameWindow;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.a2048app.MainActivity;
-import com.example.a2048app.R;
+import com.juicyteam.a2048app.MainActivity;
+import com.juicyteam.a2048app.R;
 
 public class gameWindow extends AppCompatActivity {
     private gameWindowInitialization gameWindowInitialization;

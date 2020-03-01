@@ -5,6 +5,7 @@
     <string name="start">Старт</string>
     <string name="statistic">Статистика</string>
     <string name="shop">Крамниця</string>
+    <string name="about">Про нас</string>
 
     <string name="best_score">Найкращий результат:</string>
     <string name="best_score2">Найкращий результат</string>
@@ -18,11 +19,18 @@
     <string name="positionBonus">Смена позиції +2</string>
     <string name="positionDesc">Оберіть два числа для зміни позиції</string>
 
+    <string name="notEnoughBonus">Не вистачає бонусів</string>
+    <string name="bonusesLimit">Ви досягли ліміту використання бонусів</string>
+
 
     <string name="string_int_format" translatable="false">%s %d</string>
     <string name="string_string_int_format" translatable="false">%s %s %d</string>
 
     <string name="rules">Правила\n\nПолучите как можно больше очков.\n1. Вы можете удалить число, просто выберите бонус и ячейку.\n2. Вы можете удвоить число, просто выберите
-        бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.</string>
+        бонус и ячейку.\n3. Вы можете сменить позицию двух чисел, просто выберите бонус и две ячейки.\n4. У вас є 5 бонусів на кожен раунд.</string>
+
+
+    <string name="aboutDesc">Гра розроблена Juicy Team. Сподіваємось Вам сподобається наша гра, та ви отримаєте від неї тільки позитивні емоції!\nІконки від Flaticon.</string>
+
 
 </resources>

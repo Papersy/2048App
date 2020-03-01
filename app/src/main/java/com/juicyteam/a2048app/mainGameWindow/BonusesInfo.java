@@ -1,10 +1,12 @@
-package com.example.a2048app.mainGameWindow;
+package com.juicyteam.a2048app.mainGameWindow;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.a2048app.Enum.Bonus;
-import com.example.a2048app.R;
+import com.juicyteam.a2048app.Enum.Bonus;
+import com.juicyteam.a2048app.R;
 
 class BonusesInfo {
     private gameWindow activity;
@@ -14,6 +16,7 @@ class BonusesInfo {
     private int doubleCount;
     private int positionCount;
     private int idPosition = 0;
+    private int bonusUseCount = 5;
     private int[] arrayPosition = new int[4];
     private Bonus bonus = Bonus.NONE;
 
@@ -69,7 +72,6 @@ class BonusesInfo {
         return bonus;
     }
 
-
     int bonusCount(Bonus bonus){
         switch (bonus){
             case DELETE:
@@ -84,13 +86,15 @@ class BonusesInfo {
 
     private void deleteSector(int x, int y){ // delete sector with min number
         array[x][y] = 0;
-        deleteCount -=1;
+        deleteCount -= 1;
+        bonusUseCount -= 1;
         statistic.setDeleteCount(deleteCount);
     }
 
     private void doubleSector(int x, int y){ // double sector with max number
         array[x][y] *= 2;
         doubleCount -=1;
+        bonusUseCount -= 1;
         statistic.setDoubleCount(doubleCount);
     }
 
@@ -102,7 +106,8 @@ class BonusesInfo {
                 arrayPosition[1] = y;
                 break;
             case 2:
-                positionCount -=1;
+                positionCount -= 1;
+                bonusUseCount -= 1;
                 statistic.setPositionCount(positionCount);
                 arrayPosition[2] = x;
                 arrayPosition[3] = y;
@@ -123,4 +128,25 @@ class BonusesInfo {
         return idPosition;
     }
 
+    int getBonusUseCount() {
+        return bonusUseCount;
+    }
+
+    void setBonusUseCount(int temp){
+        bonusUseCount = temp;
+    }
+
+    void saveBonusUseCount(int boxesSize){
+         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+         SharedPreferences.Editor myEditor = myPreferences.edit();
+
+         myEditor.putInt("bonusesCount" + boxesSize, bonusUseCount);
+
+         myEditor.apply();
+    }
+
+    void setBonusUseCountFromSave(int boxesSize){
+        SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        bonusUseCount = myPreferences.getInt("bonusesCount" + boxesSize, 5);
+    }
 }

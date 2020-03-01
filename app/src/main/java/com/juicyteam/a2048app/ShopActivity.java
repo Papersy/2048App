@@ -1,12 +1,10 @@
-package com.example.a2048app;
+package com.juicyteam.a2048app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 public class ShopActivity extends AppCompatActivity {
     private Ads ads;

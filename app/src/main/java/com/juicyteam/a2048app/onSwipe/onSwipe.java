@@ -1,4 +1,4 @@
-package com.example.a2048app.onSwipe;
+package com.juicyteam.a2048app.onSwipe;
 import android.content.Context;
 
 import android.view.GestureDetector;

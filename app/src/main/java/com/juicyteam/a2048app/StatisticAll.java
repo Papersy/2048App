@@ -1,4 +1,4 @@
-package com.example.a2048app;
+package com.juicyteam.a2048app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,17 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.a2048app.mainGameWindow.Statistic;
+import com.juicyteam.a2048app.mainGameWindow.Statistic;
 
 public class StatisticAll extends AppCompatActivity {
-    private Statistic statistic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistic_all);
 
-        statistic = new Statistic(this);
+        Statistic statistic = new Statistic(this);
 
         ((TextView) findViewById(R.id.txtBestScore4)).setText(String.format(getString(R.string.string_string_int_format), getString(R.string.best_score2), "4x4:\n", statistic.getBestScr(4)));
         ((TextView) findViewById(R.id.txtBestScore5)).setText(String.format(getString(R.string.string_string_int_format), getString(R.string.best_score2), "5x5:\n", statistic.getBestScr(5)));

@@ -30,10 +30,11 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"
+            android:padding="10dp"
             android:text="@string/doubleBonus"
             android:textColor="@color/txtColor"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            app:autoSizeTextType="uniform" />
 
         <ImageView
             android:id="@+id/imgDoubleBonus"
@@ -67,10 +68,11 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:gravity="center_vertical"
-            android:paddingLeft="10dp"
+            android:padding="10dp"
             android:text="@string/positionBonus"
             android:textColor="@color/txtColor"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            app:autoSizeTextType="uniform" />
 
         <ImageView
             android:id="@+id/imgPositionBonus"
@@ -100,14 +102,15 @@
         <TextView
             android:id="@+id/textView6"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
-            android:paddingLeft="10dp"
+            android:padding="10dp"
             android:text="@string/deleteBonus"
             android:textColor="@color/txtColor"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            app:autoSizeTextType="uniform" />
 
         <ImageView
             android:id="@+id/imgDeleteBonus"

@@ -1,4 +1,4 @@
-package com.example.a2048app;
+package com.juicyteam.a2048app;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.a2048app.mainGameWindow.gameWindow;
+import com.juicyteam.a2048app.mainGameWindow.gameWindow;
 
 import java.util.Locale;
 
@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.btnShop).setOnClickListener(v->{
             Intent intent = new Intent(this, ShopActivity.class);
+            startActivity(intent);
+        });
+
+        findViewById(R.id.btnAbout).setOnClickListener(v ->{
+            Intent intent = new Intent(this, AboutActivity.class);
             startActivity(intent);
         });
 

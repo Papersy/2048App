@@ -1,4 +1,4 @@
-package com.example.a2048app.mainGameWindow;
+package com.juicyteam.a2048app.mainGameWindow;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 public class Statistic {
     private SharedPreferences myPreferences;
     private SharedPreferences.Editor myEditor;
+    private Context activity;
     private int bestScore;
     private int deleteCount;
     private int doubleCount;
@@ -14,15 +15,14 @@ public class Statistic {
     public Statistic(Context activity){
         myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         myEditor = myPreferences.edit();
+        this.activity = activity;
 
         deleteCount = myPreferences.getInt("deleteCount", 3);
         doubleCount = myPreferences.getInt("doubleCount", 1);
         positionCount = myPreferences.getInt("positionCount", 2);
     }
 
-    public int getBestScore() {
-        return bestScore;
-    }
+
 
     private void setBestScore(int bestScore) {
         this.bestScore = bestScore;
@@ -125,13 +125,6 @@ public class Statistic {
         myEditor.apply();
     }
 
-    public void addDeleteCount(int deleteCount){
-        this.deleteCount += deleteCount;
-        myEditor.putInt("deleteCount", deleteCount);
-        myEditor.apply();
-    }
-
-
 
     int getDoubleCount() {
         return doubleCount;
@@ -143,14 +136,6 @@ public class Statistic {
         myEditor.apply();
     }
 
-    public void addDoubleCount(int doubleCount){
-        this.doubleCount += doubleCount;
-        myEditor.putInt("doubleCount", doubleCount);
-        myEditor.apply();
-    }
-
-
-
     int getPositionCount() {
         return positionCount;
     }
@@ -161,9 +146,24 @@ public class Statistic {
         myEditor.apply();
     }
 
-    public void addPositionCount(int positionCount) {
-        this.positionCount += positionCount;
-        myEditor.putInt("positionCount", positionCount);
+
+    public void addBonusCount(int index){
+        SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences.Editor myEditor = myPreferences.edit();
+        switch (index){
+            case 1: // add double count
+                this.doubleCount += index;
+                myEditor.putInt("doubleCount", doubleCount);
+                break;
+            case 2: // add position count
+                this.positionCount += index;
+                myEditor.putInt("positionCount", positionCount);
+                break;
+            case 3: // add delete count
+                this.deleteCount += index;
+                myEditor.putInt("deleteCount", deleteCount);
+                break;
+        }
         myEditor.apply();
     }
 }

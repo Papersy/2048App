@@ -1,10 +1,9 @@
-package com.example.a2048app.mainGameWindow;
+package com.juicyteam.a2048app.mainGameWindow;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.preference.PreferenceManager;
 import android.view.Gravity;
@@ -17,16 +16,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.example.a2048app.Enum.Bonus;
-import com.example.a2048app.MainActivity;
-import com.example.a2048app.R;
-import com.example.a2048app.onSwipe.onSwipe;
+import com.juicyteam.a2048app.Enum.Bonus;
+import com.juicyteam.a2048app.MainActivity;
+import com.juicyteam.a2048app.R;
+import com.juicyteam.a2048app.onSwipe.onSwipe;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 class gameWindowInitialization {
-    private Statistic statistic;
     private GameController gameController;
     private gameWindow activity;
     private int index = 0;
@@ -47,8 +45,7 @@ class gameWindowInitialization {
 
         createGameBox();
 
-        statistic = new Statistic(activity);
-        gameController = new GameController(activity, textList, boxCount, statistic);
+        gameController = new GameController(activity, textList, boxCount);
 
         txtDesc = activity.findViewById(R.id.textDesc);
         swipeReader = activity.findViewById(R.id.swipeReader);
@@ -58,15 +55,15 @@ class gameWindowInitialization {
         linearPosition = activity.findViewById(R.id.linearPosition);
 
         ((ImageView) activity.findViewById(R.id.imgDelete)).setColorFilter(Color.parseColor("#bdada0"));
-        ((ImageView) activity.findViewById(R.id.imgPosition)).setColorFilter(Color.parseColor("#ffffff"));
+        ((ImageView) activity.findViewById(R.id.imgPosition)).setColorFilter(Color.WHITE);
         ((TextView) activity.findViewById(R.id.textDeleteCount)).setText(String.valueOf(gameController.bonusCount(Bonus.DELETE)));
         ((TextView) activity.findViewById(R.id.textPositionCount)).setText(String.valueOf(gameController.bonusCount(Bonus.POSITION)));
         ((TextView) activity.findViewById(R.id.textDoubleCount)).setText(String.valueOf(gameController.bonusCount(Bonus.DOUBLE)));
 
-        ((ImageView) activity.findViewById(R.id.imgGoHome)).setColorFilter(Color.parseColor("#ffffff"));
-        ((ImageView) activity.findViewById(R.id.imgPrevArray)).setColorFilter(Color.parseColor("#ffffff"));
-        ((ImageView) activity.findViewById(R.id.imgRestart)).setColorFilter(Color.parseColor("#ffffff"));
-        ((ImageView) activity.findViewById(R.id.imgRules)).setColorFilter(Color.parseColor("#ffffff"));
+        ((ImageView) activity.findViewById(R.id.imgGoHome)).setColorFilter(Color.WHITE);
+        ((ImageView) activity.findViewById(R.id.imgPrevArray)).setColorFilter(Color.WHITE);
+        ((ImageView) activity.findViewById(R.id.imgRestart)).setColorFilter(Color.WHITE);
+        ((ImageView) activity.findViewById(R.id.imgRules)).setColorFilter(Color.WHITE);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -79,16 +76,20 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.bonusCount(Bonus.DELETE) > 0) {
-                    txtDesc.setText(activity.getString(R.string.deleteDesc));
-                    txtDesc.setVisibility(View.VISIBLE);
-                    gameController.setBonus(Bonus.DELETE);
-                    swipeReader.setVisibility(View.GONE);
-                    activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style_activated);
-                    activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
-                    activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
-                } else
-                    Toast.makeText(activity, "Not enough bonuses", Toast.LENGTH_SHORT).show();
+                if(gameController.getBonusUseCount() != 0) {
+                    if (gameController.bonusCount(Bonus.DELETE) > 0) {
+                        txtDesc.setText(activity.getString(R.string.deleteDesc));
+                        txtDesc.setVisibility(View.VISIBLE);
+                        gameController.setBonus(Bonus.DELETE);
+                        swipeReader.setVisibility(View.GONE);
+                        activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style_activated);
+                        activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
+                        activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
+                    } else
+                        Toast.makeText(activity, activity.getString(R.string.notEnoughBonus), Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(activity, activity.getString(R.string.bonusesLimit), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -100,16 +101,20 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.bonusCount(Bonus.DOUBLE) > 0) {
-                    txtDesc.setText(activity.getString(R.string.doubleDesc));
-                    txtDesc.setVisibility(View.VISIBLE);
-                    gameController.setBonus(Bonus.DOUBLE);
-                    swipeReader.setVisibility(View.GONE);
-                    activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
-                    activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style_activated);
-                    activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
-                } else
-                    Toast.makeText(activity, "Not enough bonuses", Toast.LENGTH_SHORT).show();
+                if(gameController.getBonusUseCount() != 0) {
+                    if (gameController.bonusCount(Bonus.DOUBLE) > 0) {
+                        txtDesc.setText(activity.getString(R.string.doubleDesc));
+                        txtDesc.setVisibility(View.VISIBLE);
+                        gameController.setBonus(Bonus.DOUBLE);
+                        swipeReader.setVisibility(View.GONE);
+                        activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
+                        activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style_activated);
+                        activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
+                    } else
+                        Toast.makeText(activity, activity.getString(R.string.notEnoughBonus), Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(activity, activity.getString(R.string.bonusesLimit), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -121,16 +126,20 @@ class gameWindowInitialization {
                 activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style);
             }
             else {
-                if (gameController.bonusCount(Bonus.POSITION) > 0) {
-                    txtDesc.setText(activity.getString(R.string.positionDesc));
-                    txtDesc.setVisibility(View.VISIBLE);
-                    gameController.setBonus(Bonus.POSITION);
-                    swipeReader.setVisibility(View.GONE);
-                    activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
-                    activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
-                    activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style_activated);
-                } else
-                    Toast.makeText(activity, "Not enough bonuses", Toast.LENGTH_SHORT).show();
+                if(gameController.getBonusUseCount() != 0) {
+                    if (gameController.bonusCount(Bonus.POSITION) > 0) {
+                        txtDesc.setText(activity.getString(R.string.positionDesc));
+                        txtDesc.setVisibility(View.VISIBLE);
+                        gameController.setBonus(Bonus.POSITION);
+                        swipeReader.setVisibility(View.GONE);
+                        activity.findViewById(R.id.linearDelete).setBackgroundResource(R.drawable.bonus_style);
+                        activity.findViewById(R.id.linearDouble).setBackgroundResource(R.drawable.bonus_style);
+                        activity.findViewById(R.id.linearPosition).setBackgroundResource(R.drawable.bonus_style_activated);
+                    } else
+                        Toast.makeText(activity, activity.getString(R.string.notEnoughBonus), Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(activity, activity.getString(R.string.bonusesLimit), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -160,9 +169,7 @@ class gameWindowInitialization {
 
         activity.findViewById(R.id.prevArray).setOnClickListener(v-> gameController.setPrevArray());
 
-        activity.findViewById(R.id.linearRules).setOnClickListener(v->{
-            showAlertDialog();
-        });
+        activity.findViewById(R.id.linearRules).setOnClickListener(v-> showAlertDialog());
     }
 
 
@@ -252,14 +259,14 @@ class gameWindowInitialization {
         }
     }
 
-    void showAlertDialog(){
+    private void showAlertDialog(){
         AlertDialog alertDialog = new AlertDialog.Builder(activity, R.style.MyDialogTheme).create();
         alertDialog.setMessage(activity.getString(R.string.rules));
 
 
         alertDialog.show();
 
-        TextView messageView = (TextView)alertDialog.findViewById(android.R.id.message);
+        TextView messageView = alertDialog.findViewById(android.R.id.message);
 
         Objects.requireNonNull(messageView).setTextColor(Color.parseColor("#FFFFFF"));
         messageView.setTextSize(25);

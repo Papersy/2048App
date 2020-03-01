@@ -1,4 +1,4 @@
-package com.example.a2048app.Enum;
+package com.juicyteam.a2048app.Enum;
 
 public enum Bonus {
     DOUBLE,

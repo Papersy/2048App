@@ -1,4 +1,4 @@
-package com.example.a2048app.mainGameWindow;
+package com.juicyteam.a2048app.mainGameWindow;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -8,10 +8,10 @@ import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.a2048app.Animation.Anim;
-import com.example.a2048app.Animation.CheckMove;
-import com.example.a2048app.Enum.Bonus;
-import com.example.a2048app.R;
+import com.juicyteam.a2048app.Animation.Anim;
+import com.juicyteam.a2048app.Animation.CheckMove;
+import com.juicyteam.a2048app.Enum.Bonus;
+import com.juicyteam.a2048app.R;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -29,35 +29,26 @@ class GameController {
 
     private ArrayList textArray;
 
-    GameController(gameWindow activity, ArrayList textArray, int boxSize, Statistic statistic) {
+    GameController(gameWindow activity, ArrayList textArray, int boxSize) {
         this.activity = activity;
         this.textArray = textArray;
         this.boxSize = boxSize;
-        this.statistic = statistic;
-
-        SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
-        int savedArraySize = myPreferences.getInt("savedArraySize", 0);
 
         array = new int[boxSize][boxSize];
 
+        statistic = new Statistic(activity);
         bonusesInfo = new BonusesInfo(activity, array, statistic);
         anim = new Anim(boxSize, array, textArray);
         checkMove = new CheckMove(boxSize, array);
 
-//        if(boxSize == savedArraySize)
-//            setArray();
-//        else{
-//            addNewNumber();
-//            addNewNumber();
-//        }
-
         try{
             setArray();
+            bonusesInfo.setBonusUseCountFromSave(boxSize);
         }catch (Exception e){
+            bonusesInfo.setBonusUseCount(5);
             addNewNumber();
             addNewNumber();
         }
-
 
         txtScore = activity.findViewById(R.id.txtScore);
         txtBestScore = activity.findViewById(R.id.txtBestScore);
@@ -81,7 +72,6 @@ class GameController {
             array[x][y] = 2;
         else
             array[x][y] = 4;
-
     }
 
     // timer for ending animation
@@ -90,20 +80,24 @@ class GameController {
             isMove = false;
             anim.animFunc(index);
 
+
+            activity.runOnUiThread(this::test);
+
+
             new CountDownTimer(350, 1000){
                 @Override
                 public void onTick(long l) {
                 }
                 @Override
                 public void onFinish() {
-                    if(anim.isSpawnNew()) {
-                        addNewNumber();
-                        calcScore();
-                    }
-                    isMove = true;
-                    anim.setSpawnNew(false);
-
-                    printArray();
+//                    if(anim.isSpawnNew()) {
+//                        addNewNumber();
+//                        calcScore();
+//                    }
+//                    isMove = true;
+//                    anim.setSpawnNew(false);
+//
+//                    printArray();
                 }
             }.start();
         }
@@ -113,6 +107,23 @@ class GameController {
         }
     }
 
+    void test(){
+        try {
+            Thread.sleep(350);
+            if(anim.isSpawnNew()) {
+                addNewNumber();
+                calcScore();
+            }
+            isMove = true;
+            anim.setSpawnNew(false);
+
+            printArray();
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+    }
 
 
 
@@ -132,8 +143,11 @@ class GameController {
         return bonusesInfo.getIndex();
     }
 
+    int getBonusUseCount() { return bonusesInfo.getBonusUseCount(); }
+
     void checkBonus(int x, int y){ // function to use one bonus
         bonusesInfo.checkBonus(x, y);
+        bonusesInfo.saveBonusUseCount(boxSize);
         calcScore();
         printArray();
     }
@@ -208,12 +222,8 @@ class GameController {
                             gradientDrawable.setColor(Color.parseColor("#edc22e"));
                             ((View) textArray.get(index)).setBackground(gradientDrawable);
                             break;
-                        case 4096:
-                            gradientDrawable.setColor(Color.parseColor("#3e3933"));
-                            ((View) textArray.get(index)).setBackground(gradientDrawable);
-                            break;
                             default:
-                                gradientDrawable.setColor(Color.parseColor("#F310D0"));
+                                gradientDrawable.setColor(Color.parseColor("#3e3933"));
                                 ((View) textArray.get(index)).setBackground(gradientDrawable);
                                 break;
                     }
@@ -253,7 +263,6 @@ class GameController {
                 str.append(array[i][j]).append(",");
             }
         }
-        System.out.println(str.toString());
         myEditor.putString("strArray" + boxSize, str.toString());
         myEditor.putInt("savedArray", boxSize);
         myEditor.apply();
@@ -295,7 +304,8 @@ class GameController {
         addNewNumber();
         printArray();
         calcScore();
-        anim = new Anim(boxSize, array, textArray);
+        bonusesInfo.setBonusUseCount(5);
+        //anim = new Anim(boxSize, array, textArray);
         activity.findViewById(R.id.textDesc).setVisibility(View.INVISIBLE);
     }
 }
