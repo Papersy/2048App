@@ -41,10 +41,10 @@ class GameController {
         anim = new Anim(boxSize, array, textArray);
         checkMove = new CheckMove(boxSize, array);
 
-        try{
+        try {
             setArray();
             bonusesInfo.setBonusUseCountFromSave(boxSize);
-        }catch (Exception e){
+        } catch (Exception e) {
             bonusesInfo.setBonusUseCount(5);
             addNewNumber();
             addNewNumber();
@@ -59,35 +59,36 @@ class GameController {
     }
 
     // spawn new number
-    private void addNewNumber(){
+    private void addNewNumber() {
         int x = (int) (Math.random() * boxSize);
         int y = (int) (Math.random() * boxSize);
-        while(array[x][y]!=0){
-            x = (int)(Math.random() * boxSize);
-            y = (int)(Math.random() * boxSize);
+        while (array[x][y] != 0) {
+            x = (int) (Math.random() * boxSize);
+            y = (int) (Math.random() * boxSize);
         }
 
         int chance = (int) (Math.random() * 10);
-        if(chance < 8)
+        if (chance < 8)
             array[x][y] = 2;
         else
             array[x][y] = 4;
     }
 
     // timer for ending animation
-    void countTimer(int index){
-        if(checkMove.isMove() && isMove) {
+    void countTimer(int index) {
+        if (checkMove.isMove() && isMove) {
             isMove = false;
             anim.animFunc(index);
 
 
-            activity.runOnUiThread(this::test);
+            new Thread(this::test).start();
 
 
-            new CountDownTimer(350, 1000){
+            new CountDownTimer(350, 1000) {
                 @Override
                 public void onTick(long l) {
                 }
+
                 @Override
                 public void onFinish() {
 //                    if(anim.isSpawnNew()) {
@@ -100,17 +101,20 @@ class GameController {
 //                    printArray();
                 }
             }.start();
-        }
-        else if(!checkMove.isMove()){
+        } else if (!checkMove.isMove()) {
             activity.findViewById(R.id.textDesc).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.textDesc)).setText(activity.getString(R.string.game_over));
         }
     }
 
-    void test(){
+    void test() {
         try {
-            Thread.sleep(350);
-            if(anim.isSpawnNew()) {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        activity.runOnUiThread(() -> {
+            if (anim.isSpawnNew()) {
                 addNewNumber();
                 calcScore();
             }
@@ -118,34 +122,34 @@ class GameController {
             anim.setSpawnNew(false);
 
             printArray();
+        });
 
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
     }
 
 
-
-    int bonusCount(Bonus bonus){ // get count of bonus
+    int bonusCount(Bonus bonus) { // get count of bonus
         return bonusesInfo.bonusCount(bonus);
     }
 
-    Bonus getBonus(){ // get current bonus
+    Bonus getBonus() { // get current bonus
         return bonusesInfo.getBonus();
     }
 
-    void setBonus(Bonus bonus){ // set bonus
+    void setBonus(Bonus bonus) { // set bonus
         bonusesInfo.setBonus(bonus);
     }
 
-    int getIndex(){ // get position index
+    int getIndex() { // get position index
         return bonusesInfo.getIndex();
     }
 
-    int getBonusUseCount() { return bonusesInfo.getBonusUseCount(); }
+    int getBonusUseCount() {
+        return bonusesInfo.getBonusUseCount();
+    }
 
-    void checkBonus(int x, int y){ // function to use one bonus
+    void checkBonus(int x, int y) { // function to use one bonus
         bonusesInfo.checkBonus(x, y);
         bonusesInfo.saveBonusUseCount(boxSize);
         calcScore();
@@ -153,29 +157,29 @@ class GameController {
     }
 
     // set background color and text
-    private void printArray(){
+    private void printArray() {
         int index = 0;
 
         int radius = 15, color;
         GradientDrawable gradientDrawable;
 
-        for(int i = 0; i < boxSize; i++){
-            for(int j = 0; j < boxSize; j++, index++){
-                if(array[i][j] == 0)
-                    ((View)textArray.get(index)).setVisibility(View.INVISIBLE);
+        for (int i = 0; i < boxSize; i++) {
+            for (int j = 0; j < boxSize; j++, index++) {
+                if (array[i][j] == 0)
+                    ((View) textArray.get(index)).setVisibility(View.INVISIBLE);
                 else {
-                    if(array[i][j] <= 4)
+                    if (array[i][j] <= 4)
                         ((TextView) textArray.get(index)).setTextColor(activity.getResources().getColor(R.color.txtColor));
                     else
                         ((TextView) textArray.get(index)).setTextColor(Color.WHITE);
 
-                    ((TextView)textArray.get(index)).setText(String.valueOf(array[i][j]));
+                    ((TextView) textArray.get(index)).setText(String.valueOf(array[i][j]));
                     ((View) textArray.get(index)).setVisibility(View.VISIBLE);
 
                     gradientDrawable = new GradientDrawable();
                     gradientDrawable.setCornerRadius(radius);
 
-                    switch (array[i][j]){
+                    switch (array[i][j]) {
                         case 2:
                             color = Color.parseColor("#eee4da");
                             gradientDrawable.setColor(color);
@@ -222,10 +226,10 @@ class GameController {
                             gradientDrawable.setColor(Color.parseColor("#edc22e"));
                             ((View) textArray.get(index)).setBackground(gradientDrawable);
                             break;
-                            default:
-                                gradientDrawable.setColor(Color.parseColor("#3e3933"));
-                                ((View) textArray.get(index)).setBackground(gradientDrawable);
-                                break;
+                        default:
+                            gradientDrawable.setColor(Color.parseColor("#3e3933"));
+                            ((View) textArray.get(index)).setBackground(gradientDrawable);
+                            break;
                     }
                 }
             }
@@ -233,33 +237,31 @@ class GameController {
     }
 
 
-
     // calculate scores
-    private void calcScore(){
+    private void calcScore() {
         int temp = 0;
-        for(int i = 0; i < boxSize; i++){
-            for(int j = 0; j < boxSize; j++){
+        for (int i = 0; i < boxSize; i++) {
+            for (int j = 0; j < boxSize; j++) {
                 temp += array[i][j];
             }
         }
 
         txtScore.setText(String.format(activity.getString(R.string.string_int_format), activity.getString(R.string.score), temp));
-        if(temp > statistic.getBestScr(boxSize)) {
+        if (temp > statistic.getBestScr(boxSize)) {
             txtBestScore.setText(String.format(activity.getString(R.string.string_int_format), activity.getString(R.string.best_score), temp));
             statistic.setBestScr(boxSize, temp);
-        }
-        else
+        } else
             txtBestScore.setText(String.format(activity.getString(R.string.string_int_format), activity.getString(R.string.best_score), statistic.getBestScr(boxSize)));
     }
 
     // saves current array
-    void saveArray(){
+    void saveArray() {
         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
         SharedPreferences.Editor myEditor = myPreferences.edit();
 
         StringBuilder str = new StringBuilder();
         for (int i = 0; i < boxSize; i++) {
-            for (int j = 0; j < boxSize; j++){
+            for (int j = 0; j < boxSize; j++) {
                 str.append(array[i][j]).append(",");
             }
         }
@@ -269,24 +271,24 @@ class GameController {
     }
 
     //sets saved array
-    private void setArray(){
+    private void setArray() {
         SharedPreferences myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
 
         String savedString = myPreferences.getString("strArray" + boxSize, "");
         StringTokenizer st = new StringTokenizer(savedString, ",");
         for (int i = 0; i < boxSize; i++) {
-            for (int j = 0; j < boxSize; j++){
+            for (int j = 0; j < boxSize; j++) {
                 array[i][j] = Integer.parseInt(st.nextToken());
             }
         }
     }
 
     //saves prev array
-    void setPrevArray(){
-        if(anim.isPrev()) {
+    void setPrevArray() {
+        if (anim.isPrev()) {
             for (int i = 0; i < boxSize; i++) {
                 for (int j = 0; j < boxSize; j++) {
-                    array[i][j] = anim.isPrevArray(i,j);
+                    array[i][j] = anim.isPrevArray(i, j);
                 }
             }
             printArray();
@@ -294,9 +296,9 @@ class GameController {
     }
 
     //restarts current game level
-    void restartGame(){
-        for(int i = 0; i < boxSize; i++){
-            for (int j = 0; j < boxSize; j++){
+    void restartGame() {
+        for (int i = 0; i < boxSize; i++) {
+            for (int j = 0; j < boxSize; j++) {
                 array[i][j] = 0;
             }
         }
