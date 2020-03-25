@@ -3,7 +3,6 @@ package com.juicyteam.a2048app.mainGameWindow;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.os.CountDownTimer;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.TextView;
@@ -17,6 +16,9 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 class GameController {
+    private SharedPreferences myPreferences;
+    private SharedPreferences.Editor myEditor;
+    private int index = 0;
     private BonusesInfo bonusesInfo;
     private Anim anim;
     private CheckMove checkMove;
@@ -34,11 +36,16 @@ class GameController {
         this.textArray = textArray;
         this.boxSize = boxSize;
 
+        myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        myEditor = myPreferences.edit();
+        myEditor.putInt("time", 340);
+        myEditor.apply();
+
         array = new int[boxSize][boxSize];
 
         statistic = new Statistic(activity);
         bonusesInfo = new BonusesInfo(activity, array, statistic);
-        anim = new Anim(boxSize, array, textArray);
+        anim = new Anim(boxSize, array, textArray, activity);
         checkMove = new CheckMove(boxSize, array);
 
         try {
@@ -75,41 +82,29 @@ class GameController {
     }
 
     // timer for ending animation
-    void countTimer(int index) {
+    void countTimer(int index)
+    {
+        this.index = index;
         if (checkMove.isMove() && isMove) {
             isMove = false;
-            anim.animFunc(index);
 
+            new Thread(this::animFunction).start();
 
-            new Thread(this::test).start();
-
-
-            new CountDownTimer(350, 1000) {
-                @Override
-                public void onTick(long l) {
-                }
-
-                @Override
-                public void onFinish() {
-//                    if(anim.isSpawnNew()) {
-//                        addNewNumber();
-//                        calcScore();
-//                    }
-//                    isMove = true;
-//                    anim.setSpawnNew(false);
-//
-//                    printArray();
-                }
-            }.start();
+            new Thread(this::waitAnimation).start();
         } else if (!checkMove.isMove()) {
             activity.findViewById(R.id.textDesc).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.textDesc)).setText(activity.getString(R.string.game_over));
         }
     }
 
-    void test() {
+    private void animFunction(){
+        activity.runOnUiThread(() -> anim.animFunc(index));
+    }
+
+    private void waitAnimation() {
         try {
-            Thread.sleep(300);
+            Thread.sleep(myPreferences.getInt("time", 340));
+            System.out.println("TIME : " + myPreferences.getInt("time", 340));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -123,9 +118,6 @@ class GameController {
 
             printArray();
         });
-
-
-
     }
 
 

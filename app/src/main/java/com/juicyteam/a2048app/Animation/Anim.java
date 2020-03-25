@@ -1,120 +1,211 @@
 package com.juicyteam.a2048app.Animation;
 
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.view.View;
+import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+
+import com.juicyteam.a2048app.mainGameWindow.gameWindow;
 
 import java.util.ArrayList;
 
 public class Anim {
+    private long time = 350;
     private int animTransition;
     private int boxSize;
     private int[][] array, prevArray;
     private boolean spawnNew = false, isPrev = false;
+    private TranslateAnimation translateAnimation;
+    private SharedPreferences myPreferences;
+    private SharedPreferences.Editor myEditor;
 
     private ArrayList textArray;
 
 
-    public Anim(int boxSize, int[][] array, ArrayList textArray){
+    public Anim(int boxSize, int[][] array, ArrayList textArray, gameWindow activity){
         this.boxSize = boxSize;
         this.array = array;
         this.textArray = textArray;
 
-        animTransition = 800/boxSize + 10;
+        myPreferences = PreferenceManager.getDefaultSharedPreferences(activity);
+        myEditor = myPreferences.edit();
+
+        animTransition = 800 / boxSize + 10;
         prevArray = new int[boxSize][boxSize];
     }
 
     public void animFunc(int index){
-        TranslateAnimation translateAnimation;
 
-            savePrevArray();
+        savePrevArray();
 
-            switch (index) {
-                case 1: //top
-                    for (int i = 0; i < boxSize; i++) {
-                        for (int g = 0; g < boxSize; g++) {
-                            for (int j = g + 1; j < boxSize; j++) {
-                                if (array[j][i] != 0 && (array[g][i] == array[j][i] || array[g][i] == 0)) {
-                                    spawnNew = true;
-                                    int temp = getVerticalIndex(i, j);
-
-                                    View view = (View) textArray.get(temp);
-                                    translateAnimation = new TranslateAnimation(0, 0, 0, (g - j) * animTransition);
-                                    translateAnimation.setDuration(320);
-                                    view.startAnimation(translateAnimation);
-
-                                    array[g][i] += array[j][i];
-                                    array[j][i] = 0;
-                                } else if (array[j][i] != array[g][i] && array[j][i] != 0)
-                                    break;
-                            }
-                        }
-                    }
-                    break;
-                case 2: //bot
-                    for (int i = 0; i < boxSize; i++) {
-                        for (int g = boxSize - 1; g > 0; g--) {
-                            for (int j = g - 1; j >= 0; j--) {
-                                if (array[j][i] != 0 && (array[g][i] == array[j][i] || array[g][i] == 0)) {
-                                    spawnNew = true;
-                                    int temp = getVerticalIndex(i, j);
-
-                                    View view = (View) textArray.get(temp);
-                                    translateAnimation = new TranslateAnimation(0, 0, 0, (g - j) * animTransition);
-                                    translateAnimation.setDuration(320);
-                                    view.startAnimation(translateAnimation);
-
-                                    array[g][i] += array[j][i];
-                                    array[j][i] = 0;
-                                } else if (array[j][i] != array[g][i] && array[j][i] != 0)
-                                    break;
-                            }
-                        }
-                    }
-                    break;
-                case 3: //left
-                    for (int i = 0; i < boxSize; i++) {
-                        for (int g = 0; g < boxSize - 1; g++) {
-                            for (int j = g + 1; j < boxSize; j++) {
-                                if (array[i][j] != 0 && (array[i][g] == array[i][j] || array[i][g] == 0)) {
-                                    spawnNew = true;
-                                    int temp = getHorizontalIndex(i, j);
-
-                                    View view = (View) textArray.get(temp);
-                                    translateAnimation = new TranslateAnimation(0, (j - g) * -1 * animTransition, 0, 0);
-                                    translateAnimation.setDuration(320);
-                                    view.startAnimation(translateAnimation);
-
-                                    array[i][g] += array[i][j];
-                                    array[i][j] = 0;
-                                } else if (array[i][j] != array[i][g] && array[i][j] != 0)
-                                    break;
-                            }
-                        }
-                    }
-                    break;
-                case 4: //right
-                    for (int i = 0; i < boxSize; i++) {
-                        for (int g = boxSize - 1; g > 0; g--) {
-                            for (int j = g - 1; j >= 0; j--) {
-                                if (array[i][j] != 0 && (array[i][g] == array[i][j] || array[i][g] == 0)) {
-                                    spawnNew = true;
-                                    int temp = getHorizontalIndex(i, j);
-
-                                    View view = (View) textArray.get(temp);
-                                    translateAnimation = new TranslateAnimation(0, (g - j) * animTransition, 0, 0);
-                                    translateAnimation.setDuration(320);
-                                    view.startAnimation(translateAnimation);
-
-                                    array[i][g] += array[i][j];
-                                    array[i][j] = 0;
-                                } else if (array[i][j] != array[i][g] && array[i][j] != 0)
-                                    break;
-                            }
-                        }
-                    }
-                    break;
-            }
+        switch (index) {
+            case 1: //top
+                new Thread(this::top).start();
+                break;
+            case 2: //bot
+                new Thread(this::bot).start();
+                break;
+            case 3: //left
+                new Thread(this::left).start();
+                break;
+            case 4: //right
+                new Thread(this::right).start();
+                break;
+        }
     }
+
+    private void top(){
+        for (int i = 0; i < boxSize; i++) {
+            for (int g = 0; g < boxSize; g++) {
+                for (int j = g + 1; j < boxSize; j++) {
+                    if (array[j][i] != 0 && (array[g][i] == array[j][i] || array[g][i] == 0)) {
+                        spawnNew = true;
+                        int temp = getVerticalIndex(i, j);
+
+                        View view = (View) textArray.get(temp);
+                        translateAnimation = new TranslateAnimation(0, 0, 0, (g - j) * animTransition);
+                        time = System.currentTimeMillis();
+                        translateAnimation.setDuration(320);
+
+                        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) { }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                myEditor.putInt("time", (int)(System.currentTimeMillis() - time));
+                                myEditor.apply();
+                                //считаем разницу двух чисел и сохраняем через myPreferences
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
+
+                        view.startAnimation(translateAnimation);
+
+                        array[g][i] += array[j][i];
+                        array[j][i] = 0;
+                    } else if (array[j][i] != array[g][i] && array[j][i] != 0)
+                        break;
+                }
+            }
+        }
+    }
+
+    private void bot(){
+        for (int i = 0; i < boxSize; i++) {
+            for (int g = boxSize - 1; g > 0; g--) {
+                for (int j = g - 1; j >= 0; j--) {
+                    if (array[j][i] != 0 && (array[g][i] == array[j][i] || array[g][i] == 0)) {
+                        spawnNew = true;
+                        int temp = getVerticalIndex(i, j);
+
+                        View view = (View) textArray.get(temp);
+                        translateAnimation = new TranslateAnimation(0, 0, 0, (g - j) * animTransition);
+                        time = System.currentTimeMillis();
+                        translateAnimation.setDuration(320);
+
+                        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) { }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                myEditor.putInt("time", (int)(System.currentTimeMillis() - time));
+                                myEditor.apply();
+                                //считаем разницу двух чисел и сохраняем через myPreferences
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
+
+                        view.startAnimation(translateAnimation);
+
+                        array[g][i] += array[j][i];
+                        array[j][i] = 0;
+                    } else if (array[j][i] != array[g][i] && array[j][i] != 0)
+                        break;
+                }
+            }
+        }
+    }
+
+    private void left(){
+        for (int i = 0; i < boxSize; i++) {
+            for (int g = 0; g < boxSize - 1; g++) {
+                for (int j = g + 1; j < boxSize; j++) {
+                    if (array[i][j] != 0 && (array[i][g] == array[i][j] || array[i][g] == 0)) {
+                        spawnNew = true;
+                        int temp = getHorizontalIndex(i, j);
+
+                        View view = (View) textArray.get(temp);
+                        translateAnimation = new TranslateAnimation(0, (j - g) * -1 * animTransition, 0, 0);
+                        time = System.currentTimeMillis();
+                        translateAnimation.setDuration(320);
+
+                        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) { }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                myEditor.putInt("time", (int)(System.currentTimeMillis() - time));
+                                myEditor.apply();
+                                //считаем разницу двух чисел и сохраняем через myPreferences
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
+
+                        view.startAnimation(translateAnimation);
+
+                        array[i][g] += array[i][j];
+                        array[i][j] = 0;
+                    } else if (array[i][j] != array[i][g] && array[i][j] != 0)
+                        break;
+                }
+            }
+        }
+    }
+
+    private void right(){
+        for (int i = 0; i < boxSize; i++) {
+            for (int g = boxSize - 1; g > 0; g--) {
+                for (int j = g - 1; j >= 0; j--) {
+                    if (array[i][j] != 0 && (array[i][g] == array[i][j] || array[i][g] == 0)) {
+                        spawnNew = true;
+                        int temp = getHorizontalIndex(i, j);
+
+                        View view = (View) textArray.get(temp);
+                        translateAnimation = new TranslateAnimation(0, (g - j) * animTransition, 0, 0);
+                        time = System.currentTimeMillis();
+                        translateAnimation.setDuration(320);
+
+                        translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) { }
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                myEditor.putInt("time", (int)(System.currentTimeMillis() - time));
+                                myEditor.apply();
+                                //считаем разницу двух чисел и сохраняем через myPreferences
+                            }
+                            @Override
+                            public void onAnimationRepeat(Animation animation) { }
+                        });
+
+                        view.startAnimation(translateAnimation);
+
+                        array[i][g] += array[i][j];
+                        array[i][j] = 0;
+                    } else if (array[i][j] != array[i][g] && array[i][j] != 0)
+                        break;
+                }
+            }
+        }
+    }
+
+
+
+
 
     private int getVerticalIndex(int i, int index)
     {
