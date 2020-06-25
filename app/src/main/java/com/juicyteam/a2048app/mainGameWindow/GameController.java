@@ -26,7 +26,6 @@ class GameController {
     private gameWindow activity;
     private int[][] array;
     private int boxSize;
-    private boolean isMove = true;
     private TextView txtScore, txtBestScore;
 
     private ArrayList textArray;
@@ -85,12 +84,13 @@ class GameController {
     void countTimer(int index)
     {
         this.index = index;
-        if (checkMove.isMove() && isMove) {
-            isMove = false;
+        if (checkMove.isMove() && anim.getIsMove()) {
+            anim.setIsMove(false);
 
             new Thread(this::animFunction).start();
 
-            new Thread(this::waitAnimation).start();
+            calcScore();
+            //new Thread(this::waitAnimation).start();
         } else if (!checkMove.isMove()) {
             activity.findViewById(R.id.textDesc).setVisibility(View.VISIBLE);
             ((TextView) activity.findViewById(R.id.textDesc)).setText(activity.getString(R.string.game_over));
@@ -102,24 +102,16 @@ class GameController {
     }
 
     private void waitAnimation() {
-        try {
-            Thread.sleep(myPreferences.getInt("time", 340));
-            System.out.println("TIME : " + myPreferences.getInt("time", 340));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         activity.runOnUiThread(() -> {
             if (anim.isSpawnNew()) {
                 addNewNumber();
                 calcScore();
             }
-            isMove = true;
             anim.setSpawnNew(false);
 
             printArray();
         });
     }
-
 
     int bonusCount(Bonus bonus) { // get count of bonus
         return bonusesInfo.bonusCount(bonus);
